@@ -1,0 +1,6 @@
+/target/
+/autoUpdate/
+/logs/*.*
+/target/.*
+.settings
+/src/main/resources/env/
