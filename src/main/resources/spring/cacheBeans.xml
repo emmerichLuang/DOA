@@ -21,23 +21,15 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<context:component-scan base-package="dOA"></context:component-scan>
+	<bean id="mcCache" class="dOA.cache.MemcachedImpl">
+	</bean>	
 
-	<!-- 配置使Spring采用CGLIB代理 -->
-	<aop:aspectj-autoproxy proxy-target-class="true" />
-	
-	<!-- 引入配置文件 -->
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath*:env.properties</value>
-			</list>
-		</property>
+	<!-- guava lru cache -->
+	<bean id="lruCache" class="dOA.cache.LruCache">
 	</bean>
 
-	<import resource="classpath:spring/dataBaseBeans.xml" />
+	<bean id="cacheFacade" class="dOA.cache.CacheFacade">
+		<property name="cache" ref="lruCache"></property><!-- set注入 -->
+	</bean>
 
-	<import resource="classpath:spring/cacheBeans.xml" />
-	
 </beans>

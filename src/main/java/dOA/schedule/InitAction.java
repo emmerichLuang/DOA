@@ -4,6 +4,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import dOA.conf.Config;
+
 /**
  * 
  * @author liangrl
@@ -18,7 +20,8 @@ public class InitAction implements ApplicationListener<ContextRefreshedEvent>{
 		ApplicationContext context = event.getApplicationContext();		
 		
 		if (context.getParent() == null) {	//避免springMVC初始化两次
-			
+			//初始化自定义的配置
+			Config.init();
 		}		
 	}
 
