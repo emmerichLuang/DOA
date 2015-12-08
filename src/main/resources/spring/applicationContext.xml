@@ -23,6 +23,9 @@
 
 	<context:component-scan base-package="dOA"></context:component-scan>
 
+	<!-- 项目启动后加载 -->
+	<bean class="dOA.framework.schedule.InitAction"/>
+
 	<!-- 配置使Spring采用CGLIB代理 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 	

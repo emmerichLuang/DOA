@@ -21,14 +21,14 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="mcCache" class="dOA.cache.MemcachedImpl">
+	<bean id="mcCache" class="dOA.framework.cache.MemcachedImpl">
 	</bean>	
 
 	<!-- guava lru cache -->
-	<bean id="lruCache" class="dOA.cache.LruCache">
+	<bean id="lruCache" class="dOA.framework.cache.LruCache">
 	</bean>
 
-	<bean id="cacheFacade" class="dOA.cache.CacheFacade">
+	<bean id="cacheFacade" class="dOA.framework.cache.CacheFacade">
 		<property name="cache" ref="lruCache"></property><!-- set注入 -->
 	</bean>
 

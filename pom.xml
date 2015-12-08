@@ -265,11 +265,6 @@
 		<profile>
 			<id>verbose-dev</id>
 			<properties>
-				<log4j.properties.path>/env/log4j.properties</log4j.properties.path>
-				<conf.properties.path>/env/conf.properties</conf.properties.path>				
-				<log4j.rootLogger>debug,commonLog,Console,errorLog</log4j.rootLogger>
-				<log4j.logger.CommonLog>debug,commonLog,Console</log4j.logger.CommonLog>
-				<log4j.logger.net.spy>debug,memcachedLog,Console</log4j.logger.net.spy>
 			</properties>
 		</profile>
 		
@@ -277,11 +272,6 @@
 		<profile>
 			<id>normal-dev</id>
 			<properties>
-				<log4j.properties.path>/env/log4j.properties</log4j.properties.path>
-				<conf.properties.path>/env/conf.properties</conf.properties.path>			
-				<log4j.rootLogger>INFO,commonLog,Console,errorLog</log4j.rootLogger>
-				<log4j.logger.CommonLog>INFO,commonLog</log4j.logger.CommonLog>
-				<log4j.logger.net.spy>INFO,memcachedLog</log4j.logger.net.spy>
 			</properties>
 		</profile>		
 	</profiles>
