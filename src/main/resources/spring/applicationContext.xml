@@ -43,4 +43,5 @@
 
 	<import resource="classpath:spring/cacheBeans.xml" />
 	
+	<import resource="classpath:spring/activiti.xml" />
 </beans>
