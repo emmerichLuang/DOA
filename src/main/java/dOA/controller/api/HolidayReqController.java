@@ -1,5 +1,7 @@
 package dOA.controller.api;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dOA.framework.controller.BaseController;
 import dOA.framework.controller.JsonResult;
+import dOA.util.JacksonUtil;
 
 @Controller
 public class HolidayReqController extends BaseController{
@@ -30,7 +33,7 @@ public class HolidayReqController extends BaseController{
 	private ProcessEngine processEngine;	
 	
 	@ResponseBody
-	@RequestMapping(value = { "/webFlow/req.json" }, method = { RequestMethod.POST })	
+	@RequestMapping(value = { "/webFlow/holidayReq/req.json" }, method = { RequestMethod.POST })	
 	public void req(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		Map<String, String> params = super.getParams(request);
 		
@@ -42,7 +45,10 @@ public class HolidayReqController extends BaseController{
 		variables.put("candidateGroups", "");		
 		
 		RuntimeService runtimeService = processEngine.getRuntimeService();
-		//启动流程
+
+		//设置ACT_HI_PROCINST表的start_user_id 和在xml中的startevent中写activiti:initiator一样
+		processEngine.getIdentityService().setAuthenticatedUserId(params.get("assigneeUser"));	
+		//启动流程		
 		ProcessInstance instance = runtimeService.startProcessInstanceByKey(WORKFLOW_NAME, variables);
 		
 		//执行第一步的任务
@@ -53,7 +59,6 @@ public class HolidayReqController extends BaseController{
 			throw new RuntimeException("应该只有一个task");
 		}
 		Task task = tList.get(0);
-		//taskService.setAssignee(task.getId(), params.get("user"));
 		taskService.setOwner(task.getId(), params.get("assigneeUser"));
 		taskService.complete(task.getId(), variables);		
 		
@@ -66,4 +71,54 @@ public class HolidayReqController extends BaseController{
 		super.outJson(result, response);
 	}
 	
+	
+	/**
+	 * 某人todo的东西
+	 * 
+	 * @param request
+	 * @return
+	 * @throws IOException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/webflow/holidayReq/peopleToDo.json"}, method = { RequestMethod.POST })
+	public void peopleToDo(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Map<String, String> params = super.getParams(request);
+		TaskService taskService = processEngine.getTaskService();
+		List<Task> tasks = taskService.createTaskQuery().taskAssignee(params.get("people")).list();
+		
+		List<Map> resultList = new ArrayList();
+		for(Task tt:tasks){
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("id", tt.getId());
+			m.put("taskDefine", tt.getTaskDefinitionKey());		//任务定义	
+			m.put("desc", tt.getDescription());		
+			resultList.add(m);
+		}
+		
+		JsonResult result =  new JsonResult(resultList, Boolean.TRUE);
+		response.getWriter().write(JacksonUtil.catchedEncode(result));
+	}		
+	
+	
+	/**
+	 * 主管处理
+	 * TODO: 流程图中没有做网关。那么下面的代码就是人肉处理驳回了。
+	 * @param request
+	 * @return
+	 * @throws IOException 
+	 */
+	@ResponseBody
+	@RequestMapping(value = { "/webflow/holidayReq/leaderAudit.json"}, method = { RequestMethod.POST })
+	public void leaderAudit(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Map<String, String> params = super.getParams(request);
+		TaskService taskService = processEngine.getTaskService();
+		Task t = taskService.createTaskQuery().taskId(params.get("taskId")).singleResult();
+
+		Map<String, Object> variables = new HashMap<String, Object>();
+		
+		taskService.complete(t.getId(), variables);
+		
+		JsonResult result =  new JsonResult(null, Boolean.TRUE);
+		response.getWriter().write(JacksonUtil.catchedEncode(result));
+	}	
 }
