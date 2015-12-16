@@ -22,8 +22,8 @@ public class HolidayReqTest{
 		
 		ProcessEngine processEngine = (ProcessEngine)context.getBean("processEngine");
 		try {
-			Deployment deployment = processEngine.getRepositoryService().createDeployment().name("特定工程IT申请流程")
-					.addClasspathResource("diagrams/holidayReq.bpmn").deploy();     
+			Deployment deployment = processEngine.getRepositoryService().createDeployment().name("请假申请")
+					.addClasspathResource("diagrams/holidayReq.bpmn20.xml").deploy();     
 			String deploymentId = deployment.getId();
 			System.out.println(deploymentId);
 			

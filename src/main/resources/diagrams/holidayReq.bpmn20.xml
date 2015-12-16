@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
+  <process id="holidayReq" name="请假申请" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="userReq" name="用户申请" activiti:assignee="${assignee}" activiti:formKey="userReq">
-      <documentation>${assignee} 请假 ${days} 天,原因是：${reason}。
- </documentation>
+    <userTask id="userReq" name="用户申请" activiti:assignee="${assigneeUser}" activiti:candidateUsers="${candidateUsers}" activiti:candidateGroups="${candidateGroups}" activiti:formKey="userReq">
+      <documentation>${assigneeUser} 请假 ${days} 天,原因是：${reason}。</documentation>
     </userTask>
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="userReq"></sequenceFlow>
-    <userTask id="leaderAudit" name="主管审批" activiti:assignee="${assignee}" activiti:formKey="leaderAudit">
-      <documentation>${assignee} 请假 ${days} 天,原因是：${reason}。</documentation>
+    <userTask id="leaderAudit" name="主管审批" activiti:assignee="${assigneeUser}" activiti:candidateUsers="${candidateUsers}" activiti:candidateGroups="${candidateGroups}" activiti:formKey="leaderAudit">
+      <documentation>${assigneeUser} 请假 ${days} 天,原因是：${reason}。</documentation>
     </userTask>
     <sequenceFlow id="flow2" sourceRef="userReq" targetRef="leaderAudit"></sequenceFlow>
-    <userTask id="mngAudit" name="经理审批" activiti:assignee="${assignee}" activiti:formKey="mngAudit">
-      <documentation>${assignee} 请假 ${days} 天,原因是：${reason}。</documentation>
+    <userTask id="mngAudit" name="经理审批" activiti:assignee="${assigneeUser}" activiti:candidateUsers="${candidateUsers}" activiti:candidateGroups="${candidateGroups}" activiti:formKey="mngAudit">
+      <documentation>${assigneeUser} 请假 ${days} 天,原因是：${reason}。</documentation>
     </userTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow3" sourceRef="leaderAudit" targetRef="exclusivegateway1"></sequenceFlow>
-    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="mngAudit"></sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="exclusivegateway1" targetRef="mngAudit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days>=3}]]></conditionExpression>
+    </sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <sequenceFlow id="flow5" sourceRef="mngAudit" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days>=3}]]></conditionExpression>
@@ -25,8 +26,8 @@
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days<3}]]></conditionExpression>
     </sequenceFlow>
   </process>
-  <bpmndi:BPMNDiagram id="BPMNDiagram_myProcess">
-    <bpmndi:BPMNPlane bpmnElement="myProcess" id="BPMNPlane_myProcess">
+  <bpmndi:BPMNDiagram id="BPMNDiagram_holidayReq">
+    <bpmndi:BPMNPlane bpmnElement="holidayReq" id="BPMNPlane_holidayReq">
       <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="130.0" y="240.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>

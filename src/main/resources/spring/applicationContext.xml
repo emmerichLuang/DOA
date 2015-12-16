@@ -21,8 +21,9 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
 
+	<!-- -->
 	<context:component-scan base-package="dOA"></context:component-scan>
-
+ 	
 	<!-- 项目启动后加载 -->
 	<bean class="dOA.framework.schedule.InitAction"/>
 
@@ -38,10 +39,10 @@
 			</list>
 		</property>
 	</bean>
-
+<!-- -->
 	<import resource="classpath:spring/dataBaseBeans.xml" />
 
 	<import resource="classpath:spring/cacheBeans.xml" />
 	
-	<import resource="classpath:spring/activiti.xml" />
+	<import resource="classpath:spring/activiti.xml" /> 
 </beans>

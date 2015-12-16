@@ -6,9 +6,36 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dOA.util.JacksonUtil;
 
 public abstract class BaseController {
 
+	protected boolean checkRequireParam(Map<String, String> params, HttpServletResponse response, String... requiredParamName) throws Exception{
+		for(String paramName:requiredParamName){
+			if(!params.containsKey(paramName)){
+				JsonResult result = new JsonResult(null, false, "需要参数："+paramName);
+				outJson(result, response);
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * @param obj
+	 * @param response
+	 * @throws Exception 
+	 */
+	protected void outJson(JsonResult result, HttpServletResponse response) throws Exception{
+		response.setCharacterEncoding("UTF-8");  
+	    response.setContentType("application/json; charset=utf-8");  
+	    response.getWriter().write(JacksonUtil.catchedEncode(result));
+	    response.getWriter().flush();
+	    response.getWriter().close();
+	}
+	
 	/**
 	 * 获取参数
 	 * @param request

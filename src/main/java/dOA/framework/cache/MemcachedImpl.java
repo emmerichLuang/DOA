@@ -9,13 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import dOA.exceptions.CachePrefixNotDefineException;
 import dOA.exceptions.MCInitException;

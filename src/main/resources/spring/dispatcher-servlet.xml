@@ -30,7 +30,7 @@
 	    </mvc:message-converters>
 	</mvc:annotation-driven>
 
-	<context:component-scan base-package="singleBbs.controller">
+	<context:component-scan base-package="dOA">
 		<!-- 只扫描 org.springframework.stereotype.Controller注解了的bean -->
 		<context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
