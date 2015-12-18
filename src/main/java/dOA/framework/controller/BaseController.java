@@ -31,7 +31,8 @@ public abstract class BaseController {
 	protected void outJson(JsonResult result, HttpServletResponse response) throws Exception{
 		response.setCharacterEncoding("UTF-8");  
 	    response.setContentType("application/json; charset=utf-8");  
-	    response.getWriter().write(JacksonUtil.catchedEncode(result));
+	    String jsonStr = JacksonUtil.catchedEncode(result);
+	    response.getWriter().write(jsonStr);
 	    response.getWriter().flush();
 	    response.getWriter().close();
 	}
